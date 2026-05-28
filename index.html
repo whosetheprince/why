@@ -1,0 +1,292 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friendship AI</title>
+
+<style>
+
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:Arial;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+}
+
+/* ENTRY SCREEN */
+
+#entry{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:1000;
+    color:white;
+    animation:fadeOut 3s forwards;
+    animation-delay:4s;
+}
+
+#entry img{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    animation:zoom 3s infinite alternate;
+}
+
+#entry h1{
+    margin-top:20px;
+    font-size:45px;
+    text-shadow:0 0 20px pink;
+}
+
+@keyframes zoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.1);}
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        visibility:hidden;
+    }
+}
+
+/* FLOATING PHOTOS */
+
+.floating{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:20px;
+    object-fit:cover;
+    animation:float 12s linear infinite;
+    opacity:0.8;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(100vh) rotate(0deg);
+    }
+    100%{
+        transform:translateY(-120vh) rotate(360deg);
+    }
+}
+
+/* MAIN CHAT */
+
+#main{
+    position:relative;
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.chatbox{
+    width:380px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(10px);
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 0 25px rgba(0,0,0,0.3);
+    z-index:10;
+}
+
+.chatbox h2{
+    text-align:center;
+    color:white;
+}
+
+.messages{
+    height:320px;
+    overflow-y:auto;
+    margin-top:15px;
+    padding:10px;
+}
+
+.msg{
+    padding:10px;
+    margin:10px 0;
+    border-radius:15px;
+    max-width:75%;
+    color:white;
+}
+
+.user{
+    background:#7c3aed;
+    margin-left:auto;
+}
+
+.bot{
+    background:#ec4899;
+}
+
+.bottom{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:15px;
+}
+
+button{
+    border:none;
+    padding:12px;
+    border-radius:15px;
+    background:#7c3aed;
+    color:white;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ENTRY SCREEN -->
+
+<div id="entry">
+
+<!-- PASTE PHOTO LINK BELOW -->
+<img src="C:\Users\DELL\Desktop\New folder\1000030182.jpg">
+
+<h1>Hello Riya 💖</h1>
+
+</div>
+
+<!-- FLOATING PHOTOS -->
+
+<img src="C:\Users\DELL\Desktop\New folder\1 pic.png" class="floating" style="left:5%; animation-duration:10s;">
+
+<!-- MAIN -->
+
+<div id="main">
+
+<div class="chatbox">
+
+<h2>💬 Message with Prince</h2>
+
+<div class="messages" id="messages">
+
+<div class="msg bot">
+Hliii Riya 😄✨
+</div>
+
+</div>
+
+<div class="bottom">
+
+<input type="text" id="input" placeholder="Type message...">
+
+<button onclick="send()">Send</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LAUGH AUDIO -->
+<audio id="laugh">
+<source src="https://www.soundjay.com/human/sounds/laugh-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+function addMessage(text,type){
+
+    let div=document.createElement("div");
+
+    div.className="msg "+type;
+
+    div.innerHTML=text;
+
+    document.getElementById("messages").appendChild(div);
+
+    document.getElementById("messages").scrollTop=
+    document.getElementById("messages").scrollHeight;
+}
+
+function speak(text){
+
+    let speech=new SpeechSynthesisUtterance(text);
+
+    speech.lang="en-US";
+
+    speechSynthesis.speak(speech);
+}
+
+function send(){
+
+    let input=document.getElementById("input");
+
+    let text=input.value.toLowerCase();
+
+    if(text=="") return;
+
+    addMessage(text,"user");
+
+    input.value="";
+
+    let reply="😄";
+
+    if(text.includes("hi")){
+        reply="Hliii 😂💖";
+    }
+
+    else if(text.includes("what are you doing")){
+        reply="Just working with laptop and thinking why Riya is so cool 😎💻";
+    }
+
+    else if(text.includes("who are you")){
+        reply="I am AI Prince 🤖✨";
+    }
+
+    else if(text.includes("love")){
+        reply="Friendship level over 9999 💖😂";
+    }
+
+    else if(text.includes("sad")){
+        reply="No sadness allowed here 😤✨";
+        document.getElementById("laugh").play();
+    }
+
+    else{
+        let funny=[
+        "Arey wah 😂",
+        "Prince AI is thinking 🤔",
+        "Riya detected 💖",
+        "Mission friendship activated 🚀😂",
+        "Laptop says hello too 💻😂"
+        ];
+
+        reply=funny[Math.floor(Math.random()*funny.length)];
+    }
+
+    setTimeout(()=>{
+
+        addMessage(reply,"bot");
+
+        speak(reply);
+
+    },700);
+}
+
+</script>
+
+</body>
+</html>
+```
